@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Card Hover Effect</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      text-align: center;
+      
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+      
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    }
+
+    .product-card.is-hovered {
+      transform: translateY(-6px); 
+      
+      
+      box-shadow: 0 16px 24px rgba(0, 0, 0, 0.12); 
+    }
+
+    .product-image {
+      width: 100%;
+      height: 180px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      object-fit: cover; 
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+
+    .product-price {
+      font-weight: bold;
+      color: #2563eb;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="product-card" id="myCard">
+    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Wireless Headphones" class="product-image">
+    <h3 class="product-title">Wireless Headphones</h3>
+    <p class="product-price">$99.99</p>
+  </div>
+  
+  <script>
+    
+    const card = document.getElementById('myCard');
+
+
+    card.addEventListener('mouseenter', () => {
+      card.classList.add('is-hovered');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.classList.remove('is-hovered');
+    });
+  </script>
+
+</body>
+</html>
