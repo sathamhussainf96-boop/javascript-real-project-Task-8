@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog with Total Price Counter</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #1f2937;
+    }
+
+    .cart-summary {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cart-status {
+      background-color: #f3f4f6;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .cart-count {
+      background-color: #2563eb;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-left: 4px;
+    }
+
+    .cart-total-box {
+      font-weight: bold;
+      color: #111827;
+      background-color: #fef08a; 
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid #fde047;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-card.is-hovered {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+
+    .product-price {
+      font-weight: bold;
+      color: #2563eb;
+      font-size: 1.1rem;
+      margin: 0 0 16px 0;
+    }
+
+
+    .cart-btn {
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .cart-btn.add-mode {
+      background-color: #2563eb;
+    }
+
+    .cart-btn.add-mode:hover {
+      background-color: #1d4ed8;
+    }
+
+    .cart-btn.remove-mode {
+      background-color: #dc2626;
+    }
+
+    .cart-btn.remove-mode:hover {
+      background-color: #b91c1c;
+    }
+    
+    .cart-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">MiniShop</div>
+    <div class="cart-summary">
+      <div class="cart-status">
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </div>
+      <div class="cart-total-box">
+        Total: <span id="cartTotal">$0.00</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="product-grid">
+      
+      <div class="product-card" data-id="101">
+        <div>
+          <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&q=80" alt="Casual Shirt" class="product-image">
+          <h3 class="product-title">Casual Linen Shirt</h3>
+          <p class="product-price">$39.99</p>
+        </div>
+        <button class="cart-btn add-mode">Add To Cart</button>
+      </div>
+
+      <div class="product-card" data-id="102">
+        <div>
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" alt="Wireless Headphones" class="product-image">
+          <h3 class="product-title">Wireless Headphones</h3>
+          <p class="product-price">$99.99</p>
+        </div>
+        <button class="cart-btn add-mode">Add To Cart</button>
+      </div>
+
+      <div class="product-card" data-id="103">
+        <div>
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" alt="Running Shoes" class="product-image">
+          <h3 class="product-title">Running Shoes</h3>
+          <p class="product-price">$79.99</p>
+        </div>
+        <button class="cart-btn add-mode">Add To Cart</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const cart = [];
+
+    const cartCountElement = document.getElementById('cartCount');
+    const cartTotalElement = document.getElementById('cartTotal');
+    const cards = document.querySelectorAll('.product-card');
+
+    function updateCartUI() {
+      cartCountElement.textContent = cart.length;
+
+      let totalPrice = 0;
+      cart.forEach(item => {
+        const numericPrice = parseFloat(item.productPrice.replace('$', ''));
+        totalPrice += numericPrice;
+      });
+
+      cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
+    }
+
+    cards.forEach(card => {
+      const button = card.querySelector('.cart-btn');
+      const id = card.getAttribute('data-id');
+
+      button.addEventListener('click', () => {
+        if (button.classList.contains('add-mode')) {
+
+          const productData = {
+            productId: id,
+            productTitle: card.querySelector('.product-title').textContent,
+            productPrice: card.querySelector('.product-price').textContent
+          };
+
+          cart.push(productData);
+
+          button.textContent = "Remove From Cart";
+          button.classList.remove('add-mode');
+          button.classList.add('remove-mode');
+
+        } else {
+          const targetIndex = cart.findIndex(item => item.productId === id);
+          if (targetIndex !== -1) {
+            cart.splice(targetIndex, 1);
+          }
+
+          button.textContent = "Add To Cart";
+          button.classList.remove('remove-mode');
+          button.classList.add('add-mode');
+        }
+
+        updateCartUI();
+      });
+    });
+
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => card.classList.add('is-hovered'));
+      card.addEventListener('mouseleave', () => card.classList.remove('is-hovered'));
+    });
+  </script>
+
+</body>
+</html>
