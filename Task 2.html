@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Loading Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+
+    #data-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      max-width: 400px;
+      min-height: 100px;
+    }
+
+    .loading {
+      color: #0066cc;
+      font-weight: bold;
+      font-style: italic;
+      animation: pulse 1.5s infinite; 
+    }
+
+    .error {
+      color: #cc0000;
+      background-color: #ffe6e6;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="data-container">
+    <p>Data will load here shortly...</p>
+  </div>
+
+  <script>
+    const dataContainer = document.getElementById('data-container');
+
+async function fetchData() {
+  try {
+    dataContainer.innerHTML = '<p class="loading">Loading...</p>';
+    
+    const response = await fetch('https://api.example.com/data');
+    const data = await response.json();
+    dataContainer.innerHTML = `<h1>${data.title}</h1><p>${data.description}</p>`;
+    
+  } catch (error) {
+    console.error("API Error:", error);
+    dataContainer.innerHTML = '<p class="error">Failed to load data. Please try again.</p>';
+  }
+}
+
+fetchData();
+  </script>
+</body>
+</html>
