@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Catalog with Shopping Cart</title>
+  <style>
+    body {
+      background-color: #f3f4f6;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #ffffff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #1f2937;
+    }
+
+    .cart-status {
+      background-color: #f3f4f6;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .cart-count {
+      background-color: #2563eb;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-left: 4px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-card.is-hovered {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 160px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      object-fit: cover;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      color: #1f2937;
+      margin: 0 0 8px 0;
+    }
+
+    .product-price {
+      font-weight: bold;
+      color: #2563eb;
+      font-size: 1.1rem;
+      margin: 0 0 16px 0;
+    }
+
+
+    .add-to-cart-btn {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s ease;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #1d4ed8;
+    }
+    
+    .add-to-cart-btn:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">MiniShop</div>
+    <div class="cart-status">
+      Cart <span class="cart-count" id="cartCount">0</span>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="product-grid">
+      
+      <div class="product-card" data-id="101">
+        <div>
+          <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&q=80" alt="Casual Shirt" class="product-image">
+          <h3 class="product-title">Casual Linen Shirt</h3>
+          <p class="product-price">$39.99</p>
+        </div>
+        <button class="add-to-cart-btn">Add To Cart</button>
+      </div>
+
+      <div class="product-card" data-id="102">
+        <div>
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" alt="Wireless Headphones" class="product-image">
+          <h3 class="product-title">Wireless Headphones</h3>
+          <p class="product-price">$99.99</p>
+        </div>
+        <button class="add-to-cart-btn">Add To Cart</button>
+      </div>
+
+      <div class="product-card" data-id="103">
+        <div>
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" alt="Running Shoes" class="product-image">
+          <h3 class="product-title">Running Shoes</h3>
+          <p class="product-price">$79.99</p>
+        </div>
+        <button class="add-to-cart-btn">Add To Cart</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    const cart = [];
+    
+  
+    const cartCountElement = document.getElementById('cartCount');
+    const cards = document.querySelectorAll('.product-card');
+
+    cards.forEach(card => {
+      const button = card.querySelector('.add-to-cart-btn');
+
+      button.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        const title = card.querySelector('.product-title').textContent;
+        const price = card.querySelector('.product-price').textContent;
+
+        const productData = {
+          productId: id,
+          productTitle: title,
+          productPrice: price
+        };
+
+        cart.push(productData);
+
+        cartCountElement.textContent = cart.length;
+
+        
+        console.log("Current Array Contents:", cart);
+      });
+    });
+
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => card.classList.add('is-hovered'));
+      card.addEventListener('mouseleave', () => card.classList.remove('is-hovered'));
+    });
+  </script>
+
+</body>
+</html>
